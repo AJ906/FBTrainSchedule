@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Ride That Train</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- STYLE SHEETS -->
+  <link rel="stylesheet" type="text/css" media="screen" href="assets/css/reset.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+  crossorigin="anonymous"/>
+
+   <!-- FIREBASE -->
+ 
+
+  <!-- JQUERY, MOMENT.JS AND JAVASCRIPT (in that order) -->
+  <script src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+  <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+  <script src="assets/javascript/app.js"></script>
+
+ 
+</head>
+<body>
+    <!-- Main Train Schedule Container -->
+    <div class="container">
+
+        <!-- Jumbotron -->
+        <div class="jumbotron" style="background-color: darkgrey; color: white">
+          <h1 class="text-center">C'mon N' Ride It (The Train)</h1>
+          <h3 class="text-center">(I Think I Can. I Think I Can.)</h3>
+        </div>
+  
+        <div class="row">
+  
+          <div class="col-lg-12">
+  
+          <!-- Current Train Schedule-->
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title"><strong>Current Train Schedule</strong></h3>
+              </div>
+              <div class="panel-body">
+                <table class="table table-hover" id='trainSchedule-table'>
+                  <thead>
+                    <tr>
+                      <th>Train Name</th>
+                      <th>Destination</th>
+                      <th>Frequency</th>
+                      <th>Next Arrival</th>
+                      <th>Minutes Away</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+  
+            <!-- Add Train  -->
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title"><strong>Add Train</strong></h3>
+              </div>
+              <div class="panel-body">
+  
+                <!-- Entry Form -->
+                <form>
+                  <div class="form-group">
+                    <label for="train-name-input">Train Name</label>
+                    <input class="form-control" id="train-name-input" type="text">
+                  </div>
+                  <div class="form-group">
+                    <label for="destination-input">Destination</label>
+                    <input class="form-control" id="destination-input" type="text">
+                  </div>
+                  <div class="form-group">
+                    <label for="first-train-input">First Train Time (HH:mm - military time)</label>
+                    <input class="form-control" id="first-train-input" type="text">
+                  </div>
+                  <div class="form-group">
+                    <label for="frequency-input">Frequency (min)</label>
+                    <input class="form-control" id="frequency-input" type="text">
+                  </div>
+                  <button class="btn btn-primary" id="add-train-btn" type="submit">Submit</button>
+                </form>
+  
+              </div>
+  
+            </div>
+  
+          </div>
+  
+        </div>
+  
+      </div>
+
+  
+</body>
+</html>
