@@ -10,12 +10,12 @@
 
 // 1. Initialize Firebase
 var config = {
-  apiKey: "AIzaSyB49apAP7_UYG95hnC_6qhK3hWmqYTm5ac",
-  authDomain: "gtcbc-timesheet-aj906.firebaseapp.com",
-  databaseURL: "https://gtcbc-timesheet-aj906.firebaseio.com",
-  projectId: "gtcbc-timesheet-aj906",
-  storageBucket: "",
-  messagingSenderId: "733322365760"
+  apiKey: "AIzaSyBcW0TMP-l76LSXoseTWTC0zzWVN41qu3A",
+  authDomain: "hw7-trainschedule-aj906.firebaseapp.com",
+  databaseURL: "https://hw7-trainschedule-aj906.firebaseio.com",
+  projectId: "hw7-trainschedule-aj906",
+  storageBucket: "hw7-trainschedule-aj906.appspot.com",
+  messagingSenderId: "1018254839108"
 };
 firebase.initializeApp(config);
 
@@ -28,7 +28,7 @@ $("#add-train-btn").on("click", function(event) {
   // Grabs user input
   var trainName = $("#train-name-input").val().trim();
   var destName = $("#destination-input").val().trim();
-  var firstTrain = moment($("#first-train-input").val().trim(), "DD/MM/YY").format("X");
+  var firstTrain = moment($("#first-train-input").val().trim(),"HH:mm").subtract(10,"years").format("X");
   var trainFreq = $("#frequency-input").val().trim();
 
   // Creates local "temporary" object for holding employee data
@@ -49,7 +49,7 @@ $("#add-train-btn").on("click", function(event) {
   console.log(newTrain.freq);
 
   // Alert
-  alert("Employee successfully added");
+  alert("Train successfully added");
 
   // Clears all of the text-boxes
   $("#train-name-input").val("");
@@ -75,21 +75,29 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey) {
   console.log(firstTrain);
   console.log(trainFreq);
 
-  // Prettify the employee start
-  var firstTrainPretty = moment.unix(firstTrain).format("MM/DD/YY");
 
-  // Calculate the months worked using hardcore math
-  // To calculate the months worked
-  var empMonths = moment().diff(moment.unix(firstTrain, "X"), "months");
-  console.log(empMonths);
+  var remainderCalc = moment().diff(moment.unix(firstTrain), "minutes")%trainFreq;
+  var minutesAwayCalc = trainFreq - remainderCalc;
+  var nextArrivalCalc = moment().add(minutesAwayCalc,"m").format("HH:mm A");
+  
+  console.log (remainderCalc);
+  console.log (minutesAwayCalc);
+  console.log (nextArrivalCalc);
+  // // Prettify the employee start
+  // var firstTrainPretty = moment.unix(firstTrain).format("MM/DD/YY");
 
-  // Calculate the total billed rate
-  var empBilled = empMonths * trainFreq;
-  console.log(empBilled);
+  // // Calculate the months worked using hardcore math
+  // // To calculate the months worked
+  // var empMonths = moment().diff(moment.unix(firstTrain, "X"), "months");
+  // console.log(empMonths);
+
+  // // Calculate the total billed rate
+  // var empBilled = empMonths * trainFreq;
+  // console.log(empBilled);
 
   // Add each train's data into the table
   $("#train-schedule-table > tbody").append("<tr><td>" + trainName + "</td><td>" + destName + "</td><td>" +
-  firstTrainPretty + "</td><td>" + empMonths + "</td><td>" + trainFreq + "</td><td>" + empBilled + "</td></tr>");
+  trainFreq + "</td><td>" + nextArrivalCalc + "</td><td>" + minutesAwayCalc + "</td></tr>");
 });
 
 // Example Time Math
