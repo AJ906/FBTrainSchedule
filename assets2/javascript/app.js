@@ -1,13 +1,3 @@
-/* global firebase moment */
-// Steps to complete:
-
-// 1. Initialize Firebase
-// 2. Create button for adding new trains - then update the html + update the database
-// 3. Create a way to retrieve trains from the train database.
-// 4. Create a way to calculate the months worked. Using difference between start and current time.
-//    Then use moment.js formatting to set difference in months.
-// 5. Calculate Total billed
-
 // 1. Initialize Firebase
 
 var config = {
@@ -33,11 +23,11 @@ $("#add-train-btn").on("click", function(event) {
   var trnFirst = moment($("#first-train-input").val().trim(),"HH:mm").subract(10,"years").format("X");
   var trnFreq = $("#frequency-input").val().trim();
 
-  // Creates local "ttrnorary" object for holding train data
+  // Creates local "temporary" object for holding train data
   var newTrn = {
     name: trnName,
     destination: trnDest,
-    first: trnFirst,
+    first: trnFirst,  
     frequency: trnFreq
   };
 
