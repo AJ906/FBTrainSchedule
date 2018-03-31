@@ -1,14 +1,4 @@
-/* global firebase moment */
-// Steps to complete:
-
-// 1. Initialize Firebase
-// 2. Create button for adding new employees - then update the html + update the database
-// 3. Create a way to retrieve employees from the employee database.
-// 4. Create a way to calculate the months worked. Using difference between start and current time.
-//    Then use moment.js formatting to set difference in months.
-// 5. Calculate Total billed
-
-// 1. Initialize Firebase
+// Initialize Firebase
 var config = {
   apiKey: "AIzaSyBcW0TMP-l76LSXoseTWTC0zzWVN41qu3A",
   authDomain: "hw7-trainschedule-aj906.firebaseapp.com",
@@ -21,7 +11,7 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 
-// 2. Button for adding Employees
+// 2. Button for adding Trains
 $("#add-train-btn").on("click", function(event) {
   event.preventDefault();
 
@@ -31,7 +21,7 @@ $("#add-train-btn").on("click", function(event) {
   var firstTrain = moment($("#first-train-input").val().trim(),"HH:mm").subtract(10,"years").format("X");
   var trainFreq = $("#frequency-input").val().trim();
 
-  // Creates local "temporary" object for holding employee data
+  // Creates local "temporary" object for holding train schedule data
   var newTrain = {
     name: trainName,
     dest: destName,
@@ -49,7 +39,7 @@ $("#add-train-btn").on("click", function(event) {
   console.log(newTrain.freq);
 
   // Alert
-  alert("Train successfully added");
+  // alert("Train successfully added");
 
   // Clears all of the text-boxes
   $("#train-name-input").val("");
@@ -58,52 +48,38 @@ $("#add-train-btn").on("click", function(event) {
   $("#frequency-input").val("");
 });
 
-// 3. Create Firebase event for adding employee to the database and a row in the html when a user adds an entry
+// 3. Creates Firebase event for adding train to the database and a row in the html when a user adds an entry
 database.ref().on("child_added", function(childSnapshot, prevChildKey) {
 
   console.log(childSnapshot.val());
 
   // Store everything into a variable.
-  var trainName = childSnapshot.val().name; //formerly empName
-  var destName = childSnapshot.val().dest;  //formerly empRole
-  var firstTrain = childSnapshot.val().first; //formerly emp Start
-  var trainFreq = childSnapshot.val().freq; //formerly emp Rate
+  var trainName = childSnapshot.val().name; 
+  var destName = childSnapshot.val().dest; 
+  var firstTrain = childSnapshot.val().first;
+  var trainFreq = childSnapshot.val().freq; 
 
-  // Employee Info
+  // Train Info console log testing.
   console.log(trainName);
   console.log(destName);
   console.log(firstTrain);
   console.log(trainFreq);
 
-
+// Find remainder of minutes between first train and current time (takes out hours)
   var remainderCalc = moment().diff(moment.unix(firstTrain), "minutes")%trainFreq;
+
+// Subtract the remaining minutes from the train frequency to find minutes until next train.
   var minutesAwayCalc = trainFreq - remainderCalc;
+
+// Add minutesAwayCalc to current time to find Next Arrival time.
   var nextArrivalCalc = moment().add(minutesAwayCalc,"m").format("HH:mm A");
   
   console.log (remainderCalc);
   console.log (minutesAwayCalc);
   console.log (nextArrivalCalc);
-  // // Prettify the employee start
-  // var firstTrainPretty = moment.unix(firstTrain).format("MM/DD/YY");
 
-  // // Calculate the months worked using hardcore math
-  // // To calculate the months worked
-  // var empMonths = moment().diff(moment.unix(firstTrain, "X"), "months");
-  // console.log(empMonths);
-
-  // // Calculate the total billed rate
-  // var empBilled = empMonths * trainFreq;
-  // console.log(empBilled);
 
   // Add each train's data into the table
   $("#train-schedule-table > tbody").append("<tr><td>" + trainName + "</td><td>" + destName + "</td><td>" +
   trainFreq + "</td><td>" + nextArrivalCalc + "</td><td>" + minutesAwayCalc + "</td></tr>");
 });
-
-// Example Time Math
-// -----------------------------------------------------------------------------
-// Assume Employee start date of January 1, 2015
-// Assume current date is March 1, 2016
-
-// We know that this is 15 months.
-// Now we will create code in moment.js to confirm that any attempt we use meets this test case
